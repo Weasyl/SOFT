@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<title>Fender Bender</title>
+<link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+<link rel="shortcut icon" href="assets/images/favicon.ico" />
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+    $('#submit').click(function ()
+    {
+        var fa      = $('input[name=my_fa]').val();
+        var weasyl  = $('input[name=my_weasyl]').val();
+        
+        if (fa == '' || weasyl == '')
+        {
+            $('#error').html("Help us out!<br> Give us your two account names so others can find you, like you want to find them.<br>");
+            return false;
+        }
+    });
+    
+    $('input[name=correction]').click(function () {
+        var id = $(this).data('id');    
+        var fa = $('#correction'+id).data('fa');
+        var weasyl = $('#correction'+id).val();
+
+        var me = $(this);
+        ajax_url = '/ajax/correct/?id='+id+'&fa='+fa+'&weasyl=' + weasyl ;
+        
+        $.ajax({
+            url: ajax_url,
+            success: function(data) {
+                me.val('Thanks!');
+                me.attr('name', '');
+                $('#correction'+id).attr('disabled', 'DISABLED');
+            }
+        });
+    });
+    
+    $('a[name=vouch]').click(function () {
+        var fa_id = $(this).data('fa_id');
+        var weasyl = $(this).data('weasyl');
+        
+        var me = $(this);
+        ajax_url = '/ajax/vouch/?fa_id='+fa_id+'&weasyl=' + weasyl ;
+        $.ajax({
+            url: ajax_url,
+            success: function(data) {
+                me.html('Thanks!');
+                me.attr('name', '');
+                me.css('color', '#000');
+            }
+        });
+    
+    });
+});
+</script>
+</head>
+
+<body>
+<div class="block">
+    <form method="POST" style="text-align:center;">
+    {% csrf_token %}
+    <div id="error" style="font-size:14pt"></div>
+    <label>Your FA Account</label> <input name="my_fa" value="{{fa}}">
+    <label>Your Weasyl Account</label> <input name="my_weasyl" value="{{weasyl}}">
+    <br><br>
+    Paste your watch list (don't worry about the ~'s or whitespace)
+    <br>
+    <div style="margin:auto;width:700px;"><textarea name="watchlist" placeholder="~ doscoon">{{overflow}}</textarea></div>
+    <br>
+    <input type="submit" value="Weasyl Me" id="submit">
+    </form>
+</div>
+
+<div class="block" id="results">
+<div style="font-size:14pt;text-align:center">{{error}}</div>
+
+{% if results %}
+<p>Any user-supplied Weasyl accounts are shown in blue. Those shown in red are just making the assumption that the FA name is the same as the Weasyl name. Please try and submit any accounts you do have to find yourself so that others won't have to. Also vouch for Weasyl accounts listed that are correct to keep the site reliable!</p>
+{% endif %}
+
+<table>
+    <tr class="row2">
+        <th>#</th>
+        <th>Fur Affinity</th>
+        <th>Weasyl</th>
+        <th>Vouchers</th>
+        <th>Vouch</th>
+        <th>Correction</th>
+    </tr>
+{% for user in users %}
+    <tr class="{% cycle 'row1' 'row2' %}">
+        <td class="c">{{forloop.counter}}</td>
+        <td><a href="http://furaffinity.net/user/{{user.fa}}" target="_blank">{{user.fa}}</a></td>
+        {% if user.fa != "zaush" %}
+            <td>{% if user.weasyl != "" %}<a href="http://weasyl.com/profile/{{user.weasyl}}" target="_blank" class="known">{{user.weasyl}}</a>
+                {% else %}
+                    <a href="http://weasyl.com/profile/{{user.fa}}" target="_blank" class="guess">{{user.fa}}</a>
+                {% endif %}
+            </td>
+        {% else %}
+            <td><a href="http://www.vivisector.org/vivblog/index.php?/archives/40-1216-ONE-YEAR-LATER.html#extended" target="_blank">zaush</a></td>
+        {% endif %}
+        <td class="c">{%if user.vouchers != 0 %}<b>{{user.vouchers}}</b>{% else %}-{% endif %}</td>
+        <td><a class="jslink" name="vouch" data-fa_id="{{user.id}}" data-weasyl="{% if user.weasyl != "" %}{{user.weasyl}}{% else %}{{user.fa}}{% endif %}">Vouch</a></td>
+        <td><input id="correction{{forloop.counter}}" data-fa="{{user.fa}}" value=""><input type="button" name="correction" value="Correction" data-id="{{forloop.counter}}"></td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+
+<div style="text-align:center;font-size:12px;">
+    &bull; Fender Bender - hastily created by <a href="mailto:doctordos@gmail.com">Dr. Dos</a> &bull;<br>
+    <a href="http://furaffinity.net/user/doscoon">FA</a> / <a href="https://www.weasyl.com/profile/doscoon">Weasyl</a>
+</div>
+
+</body>
+</html>
