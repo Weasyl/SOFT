@@ -96,15 +96,11 @@ $(document).ready(function () {
     <tr class="{% cycle 'row1' 'row2' %}">
         <td class="c">{{forloop.counter}}</td>
         <td><a href="http://furaffinity.net/user/{{user.fa}}" target="_blank">{{user.fa}}</a></td>
-        {% if user.fa != "zaush" %}
             <td>{% if user.weasyl != "" %}<a href="http://weasyl.com/profile/{{user.weasyl}}" target="_blank" class="known">{{user.weasyl}}</a>
                 {% else %}
                     <a href="http://weasyl.com/profile/{{user.fa}}" target="_blank" class="guess">{{user.fa}}</a>
                 {% endif %}
             </td>
-        {% else %}
-            <td><a href="http://www.vivisector.org/vivblog/index.php?/archives/40-1216-ONE-YEAR-LATER.html#extended" target="_blank">zaush</a></td>
-        {% endif %}
         <td class="c">{%if user.vouchers != 0 %}<b>{{user.vouchers}}</b>{% else %}-{% endif %}</td>
         <td><a class="jslink" name="vouch" data-fa_id="{{user.id}}" data-weasyl="{% if user.weasyl != "" %}{{user.weasyl}}{% else %}{{user.fa}}{% endif %}">Vouch</a></td>
         <td><input id="correction{{forloop.counter}}" data-fa="{{user.fa}}" value=""><input type="button" name="correction" value="Correction" data-id="{{forloop.counter}}"></td>
