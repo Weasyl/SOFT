@@ -1,6 +1,6 @@
 body
 {
-    background:url('/assets/images/bedge_grunge.png');
+    background:url('../images/bedge_grunge.png');
     font-family:sans-serif;
 }
 
@@ -33,14 +33,14 @@ input[type=submit]
     width:400px;
     text-align:center;
     margin:auto;
-    background-image:url('/assets/images/button-blue.png');
+    background-image:url('../images/button-blue.png');
     border:1px solid #007;
     font-size:14pt;
 }
 
 input[type=button]
 {
-    background-image:url('/assets/images/button-blue.png');
+    background-image:url('../images/button-blue.png');
     cursor:pointer;
 }
 

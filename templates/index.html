@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 <title>Rednef Resolver</title>
-<link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+<link rel="stylesheet" type="text/css" href="assets/css/style.css" />
 <link rel="shortcut icon" href="assets/images/favicon.ico" />
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -14,22 +14,22 @@ $(document).ready(function () {
     {
         var fa      = $('input[name=my_fa]').val();
         var weasyl  = $('input[name=my_weasyl]').val();
-        
+
         if (fa == '' || weasyl == '')
         {
             $('#error').html("Help us out!<br> Give us your two account names so others can find you, like you want to find them.<br>");
             return false;
         }
     });
-    
+
     $('input[name=correction]').click(function () {
-        var id = $(this).data('id');    
+        var id = $(this).data('id');
         var fa = $('#correction'+id).data('fa');
         var weasyl = $('#correction'+id).val();
 
         var me = $(this);
-        ajax_url = '/ajax/correct/?id='+id+'&fa='+fa+'&weasyl=' + weasyl ;
-        
+        ajax_url = 'ajax/correct/?id='+id+'&fa='+fa+'&weasyl=' + weasyl ;
+
         $.ajax({
             url: ajax_url,
             success: function(data) {
@@ -39,13 +39,13 @@ $(document).ready(function () {
             }
         });
     });
-    
+
     $('a[name=vouch]').click(function () {
         var fa_id = $(this).data('fa_id');
         var weasyl = $(this).data('weasyl');
-        
+
         var me = $(this);
-        ajax_url = '/ajax/vouch/?fa_id='+fa_id+'&weasyl=' + weasyl ;
+        ajax_url = 'ajax/vouch/?fa_id='+fa_id+'&weasyl=' + weasyl ;
         $.ajax({
             url: ajax_url,
             success: function(data) {
@@ -54,7 +54,7 @@ $(document).ready(function () {
                 me.css('color', '#000');
             }
         });
-    
+
     });
 });
 </script>
